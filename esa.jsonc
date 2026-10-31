@@ -1,0 +1,8 @@
+{
+  "name": "bozzii-docs",
+  "installCommand": "npm ci",
+  "assets": {
+    "directory": "./dist",
+    "notFoundStrategy": "404Page"
+  }
+}
