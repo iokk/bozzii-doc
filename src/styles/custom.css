@@ -1,0 +1,8 @@
+:root {
+  --sl-content-width: 58rem;
+}
+
+/* 只让第一列（模型名、接口路径）不换行，其余列正常折行 */
+.sl-markdown-content td:first-child code {
+  white-space: nowrap;
+}

@@ -1,11 +1,14 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import starlightThemeRapide from 'starlight-theme-rapide';
 
 export default defineConfig({
   site: 'https://doc.bozzii.com',
   integrations: [
     starlight({
       title: '铂子 API 文档',
+      plugins: [starlightThemeRapide()],
+      customCss: ['./src/styles/custom.css'],
       defaultLocale: 'root',
       locales: { root: { label: '简体中文', lang: 'zh-CN' } },
       sidebar: [

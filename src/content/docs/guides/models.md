@@ -11,15 +11,21 @@ description: 当前可用的文本与生图模型及各协议支持情况。
 
 | 模型 | Chat | Messages | Responses | 备注 |
 |---|---|---|---|---|
-| `claude-fable-5`、`claude-fable-5-1` | ✅ | ✅ | ✅ | `claude-fable-5` 拒绝非默认 temperature/top_p |
+| `claude-fable-5` | ✅ | ✅ | ✅ | 拒绝非默认 temperature/top_p |
+| `claude-fable-5-1` | ✅ | ✅ | ✅ | |
 | `claude-sonnet-5` | ✅ | ✅ | ✅ | |
 | `claude-sonnet-5-5` | ✅ | ✅ | ✅ | 拒绝非默认 temperature/top_p |
-| `claude-opus-5`、`claude-opus-5-5` | ✅ | ✅ | ✅ | |
+| `claude-opus-5` | ✅ | ✅ | ✅ | |
+| `claude-opus-5-5` | ✅ | ✅ | ✅ | |
 | `claude-opus-4-8` | ✅ | ✅ | ✅ | 拒绝非默认 temperature/top_p |
-| `deepseek-v4-pro`、`deepseek-v4-flash`、`deepseek-v4.1-flash` | ✅ | ✅ | ✅ | 响应较快；带推理，`max_tokens` 太小会得到空 `content` |
-| `glm-5.3`、`glm-5.3-flash` | ✅ | ✅ | ✅ | |
+| `deepseek-v4-pro` | ✅ | ✅ | ✅ | 带推理，`max_tokens` 太小会得到空 `content` |
+| `deepseek-v4-flash` | ✅ | ✅ | ✅ | 响应较快；带推理 |
+| `deepseek-v4.1-flash` | ✅ | ✅ | ✅ | 响应较快；带推理 |
+| `glm-5.3` | ✅ | ✅ | ✅ | |
+| `glm-5.3-flash` | ✅ | ✅ | ✅ | |
 | `kimi-k3` | ✅ | ✅ | ✅ | 响应偏慢；支持识图，小字识别不准 |
-| `gpt-6-astra`、`gpt-6.1-sol` | ✅ | ❌ 403 | ✅ | 不能用于 Anthropic SDK 和 Claude Code |
+| `gpt-6-astra` | ✅ | ❌ 403 | ✅ | 不能用于 Anthropic SDK 和 Claude Code |
+| `gpt-6.1-sol` | ✅ | ❌ 403 | ✅ | 不能用于 Anthropic SDK 和 Claude Code |
 
 ## 生图模型
 
