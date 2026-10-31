@@ -3,7 +3,7 @@ title: 铂子 API 文档
 description: 铂子 API 网关的接入说明：协议、模型、客户端配置与排错。
 template: splash
 hero:
-  tagline: 一个 Key，同时使用 OpenAI、Anthropic、Gemini 三类协议调用多家模型。
+  tagline: 一个 Key，用 OpenAI、Anthropic、Gemini 三类协议格式调用国产大模型。
   actions:
     - text: 快速开始
       link: /guides/quickstart/
@@ -19,8 +19,8 @@ import { Card, CardGrid } from '@astrojs/starlight/components';
   <Card title="多协议" icon="puzzle">
     Chat Completions、Responses、Anthropic Messages、Gemini 原生。多数文本模型三种协议都能用。
   </Card>
-  <Card title="Claude Code 可用" icon="rocket">
-    把 `ANTHROPIC_BASE_URL` 指向网关即可，非 Claude 模型也有现成配置。
+  <Card title="Claude Code 协议可用" icon="rocket">
+    把 `ANTHROPIC_BASE_URL` 指向网关即可，国产模型也有现成配置。海外模型仅限开发测试，见[模型清单](/guides/models/)。
   </Card>
   <Card title="模型随时变化" icon="information">
     接入前请先调用 `GET /v1/models`，不要写死模型名。

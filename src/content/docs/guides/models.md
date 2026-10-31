@@ -7,7 +7,21 @@ description: 当前可用的文本与生图模型及各协议支持情况。
 模型列表由后台随时调整，短短几小时内就可能上线或下线模型。接入前请先 `GET /v1/models` 确认，不要写死模型名。
 :::
 
-## 文本模型
+## 国产文本模型
+
+| 模型 | Chat | Messages | Responses | 备注 |
+|---|---|---|---|---|
+| `deepseek-v4-pro` | ✅ | ✅ | ✅ | 带推理，`max_tokens` 太小会得到空 `content` |
+| `deepseek-v4-flash` | ✅ | ✅ | ✅ | 响应较快；带推理 |
+| `deepseek-v4.1-flash` | ✅ | ✅ | ✅ | 响应较快；带推理 |
+| `glm-5.3` | ✅ | ✅ | ✅ | |
+| `glm-5.3-flash` | ✅ | ✅ | ✅ | |
+
+## 海外模型（仅限开发测试）
+
+:::danger[使用范围限制]
+海外模型不主动向用户提供，不对个人用户开放，仅供经审核的企业用于**内部开发、测试和调试**。不得使用这些模型向终端用户或中国境内公众提供服务，也不得接入面向公众的产品。请求会经由境外链路处理，详见[隐私政策](https://ai.bozzii.com/privacy.html)和[服务条款](https://ai.bozzii.com/terms.html)。海外模型可能因上游政策调整而随时中断。
+:::
 
 | 模型 | Chat | Messages | Responses | 备注 |
 |---|---|---|---|---|
@@ -18,16 +32,13 @@ description: 当前可用的文本与生图模型及各协议支持情况。
 | `claude-opus-5` | ✅ | ✅ | ✅ | |
 | `claude-opus-5-5` | ✅ | ✅ | ✅ | |
 | `claude-opus-4-8` | ✅ | ✅ | ✅ | 拒绝非默认 temperature/top_p |
-| `deepseek-v4-pro` | ✅ | ✅ | ✅ | 带推理，`max_tokens` 太小会得到空 `content` |
-| `deepseek-v4-flash` | ✅ | ✅ | ✅ | 响应较快；带推理 |
-| `deepseek-v4.1-flash` | ✅ | ✅ | ✅ | 响应较快；带推理 |
-| `glm-5.3` | ✅ | ✅ | ✅ | |
-| `glm-5.3-flash` | ✅ | ✅ | ✅ | |
-| `kimi-k3` | ✅ | ✅ | ✅ | 响应偏慢；支持识图，小字识别不准 |
 | `gpt-6-astra` | ✅ | ❌ 403 | ✅ | 不能用于 Anthropic SDK 和 Claude Code |
 | `gpt-6.1-sol` | ✅ | ❌ 403 | ✅ | 不能用于 Anthropic SDK 和 Claude Code |
+| `kimi-k3` | ✅ | ✅ | ✅ | 响应偏慢；支持识图，小字识别不准。按内部规则归入受限组 |
 
-## 生图模型
+## 生图模型（仅限开发测试）
+
+以下生图模型同样适用上述使用范围限制。
 
 | 模型 | 调用方式 | 状态 |
 |---|---|---|

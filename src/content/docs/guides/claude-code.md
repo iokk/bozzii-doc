@@ -3,6 +3,10 @@ title: Claude Code
 description: 在 Claude Code 中使用铂子 API。
 ---
 
+:::caution[使用范围]
+Claude Code 使用的是 Anthropic 协议。本页中的 `claude-*` 模型属于海外模型，仅限经审核的企业用于内部开发、测试和调试，不得用于向终端用户或中国境内公众提供服务。非 Claude 的国产模型也可以通过同样的配置使用，见[模型清单](/guides/models/)。
+:::
+
 ## 环境变量（最简单）
 
 ```bash
