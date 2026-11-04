@@ -34,7 +34,6 @@ description: 当前可用的文本与生图模型及各协议支持情况。
 | `claude-opus-4-8` | ✅ | ✅ | ✅ | 拒绝非默认 temperature/top_p |
 | `gpt-6-astra` | ✅ | ❌ 403 | ✅ | 不能用于 Anthropic SDK 和 Claude Code |
 | `gpt-6.1-sol` | ✅ | ❌ 403 | ✅ | 不能用于 Anthropic SDK 和 Claude Code |
-| `kimi-k3` | ✅ | ✅ | ✅ | 响应偏慢；支持识图，小字识别不准。按内部规则归入受限组 |
 
 ## 生图模型（仅限开发测试）
 
@@ -43,7 +42,7 @@ description: 当前可用的文本与生图模型及各协议支持情况。
 | 模型 | 调用方式 | 状态 |
 |---|---|---|
 | `gpt-image-2.5-flare` | `POST /v1/images/generations` | ✅ 耗时约 28 秒，偶发超时 |
-| `gemini-3-pro-image`、`gemini-3-pro-image-preview` | Gemini 原生 `:generateContent`，或 Chat 非流式 | ✅ 耗时约 13～15 秒，返回图片链接 |
+| ~~`gemini-3-pro-image`~~ | — | ❌ 已下线 |
 | `gpt-image-2.5-sunburst` | `POST /v1/images/generations` | ❌ 超时，暂不可用 |
 
 ## 已下线

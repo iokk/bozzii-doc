@@ -52,7 +52,7 @@ base64 frame_0001.png | curl https://api.bozzii.com/v1/chat/completions \
   -H "Authorization: Bearer sk-xxxx" -H "content-type: application/json" \
   -d @- <<EOF
 {
-  "model": "kimi-k3",
+  "model": "glm-5.3",
   "messages": [{
     "role": "user",
     "content": [

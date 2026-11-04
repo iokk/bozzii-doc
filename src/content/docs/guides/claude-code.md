@@ -39,8 +39,7 @@ Claude Code 自带的模型目录里没有这些名字，会在本地直接报�
   "modelPicker": {
     "options": [
       { "model": "deepseek-v4-pro", "label": "DeepSeek V4 Pro", "behavesAs": "claude-sonnet-5-5" },
-      { "model": "glm-5.3",         "label": "GLM 5.3",         "behavesAs": "claude-sonnet-5-5" },
-      { "model": "kimi-k3",         "label": "Kimi K3",         "behavesAs": "claude-sonnet-5-5" }
+      { "model": "glm-5.3",         "label": "GLM 5.3",         "behavesAs": "claude-sonnet-5-5" }
     ]
   }
 }

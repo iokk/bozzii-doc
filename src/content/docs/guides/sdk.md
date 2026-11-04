@@ -37,7 +37,7 @@ from openai import OpenAI
 
 c = OpenAI(base_url="https://api.bozzii.com/v1", api_key="sk-xxxx")  # 要加 /v1
 print(c.chat.completions.create(
-    model="kimi-k3",
+    model="glm-5.3",
     messages=[{"role": "user", "content": "你好"}],
     max_tokens=256,
 ).choices[0].message.content)

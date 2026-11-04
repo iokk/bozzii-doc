@@ -169,7 +169,7 @@ curl https://api.bozzii.com/v1/models \
 | `claude-sonnet-5-5` | Anthropic | 识图、长文本 |
 | `claude-opus-5` | Anthropic | 复杂推理 |
 | `gpt-6-astra` | OpenAI | 通用对话 |
-| `gemini-3-pro-image` | Google | 生图(当前不可用) |
+| ~~`gemini-3-pro-image`~~ | Google | 生图(已下架) |
 
 ⚠️ **海外模型使用限制:**
 - 不对个人开放,仅限经审核企业客户
@@ -179,7 +179,7 @@ curl https://api.bozzii.com/v1/models \
 
 ### 已知不可用的模型
 
-- **kimi-k3** - 返回 503 "无可用渠道",暂时下线
+- **kimi-k3** - 已下架
 
 ---
 
@@ -488,7 +488,7 @@ curl https://api.bozzii.com/v1/messages \
 
 ### 生图(图片输出)
 
-#### Gemini 原生(当前不可用)
+#### Gemini 原生(已下架)
 
 ```bash
 curl "https://api.bozzii.com/v1beta/models/gemini-3-pro-image:generateContent" \
@@ -501,7 +501,7 @@ curl "https://api.bozzii.com/v1beta/models/gemini-3-pro-image:generateContent" \
   }'
 ```
 
-**当前状态:** ❌ 返回 502,上游不可用
+**当前状态:** ❌ 出图渠道已下架
 
 **预期响应格式:**
 
@@ -712,7 +712,7 @@ def call_with_retry(func, max_retries=3):
 ### 模型可用性
 
 - 模型清单会动态调整,**用前先 `GET /v1/models`**
-- 当前 `kimi-k3` 返回 503,暂时不可用
+- `kimi-k3` 已下架
 - GPT、Gemini 等上游偶发 502/503,重试多半成功
 
 ---
@@ -727,7 +727,7 @@ def call_with_retry(func, max_retries=3):
 | `/v1/chat/completions` | POST | ✅ | 支持流式 |
 | `/v1/messages` | POST | ✅ | 支持流式,部分模型 403 |
 | `/v1/responses` | POST | ✅ | 非 OpenAI 模型也能用 |
-| `/v1beta/models/{m}:generateContent` | POST | ❌ | Gemini 原生,当前 502 |
+| `/v1beta/models/{m}:generateContent` | POST | ❌ | Gemini 原生,出图渠道已下架 |
 | `/v1/images/generations` | POST | ❓ | 仅 `gpt-image-*`,未充分验证 |
 | `/v1/completions` | POST | ❌ | 404 |
 | `/v1/embeddings` | POST | ❌ | 404 |

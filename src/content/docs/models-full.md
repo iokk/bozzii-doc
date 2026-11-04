@@ -69,7 +69,7 @@ Base URL: https://api.bozzii.com/v1
 | `gemini-3-flash-20250122` | 文本对话 | ⚠️ 未测试 | Gemini 3 快速 |
 | `gemini-3-flash-thinking-exp-20250122` | 文本+推理 | ⚠️ 未测试 | 思维链版本 |
 | `gemini-3-pro-exp-20250122` | 文本对话 | ⚠️ 未测试 | Gemini 3 旗舰 |
-| `gemini-3-pro-image` | 生图 | ❌ 不可用 | 上游502错误 |
+| ~~`gemini-3-pro-image`~~ | 生图 | ❌ 已下架 | 渠道已移除 |
 | `gemini-2-flash-thinking-exp-20250122` | 文本+推理 | ⚠️ 未测试 | Gemini 2 思维链 |
 
 #### Moonshot 系列
@@ -77,7 +77,7 @@ Base URL: https://api.bozzii.com/v1
 | 模型 ID | 能力 | 测试状态 | 备注 |
 |---------|------|----------|------|
 | `kimi-k1.5` | 文本对话 | ⚠️ 未测试 | Kimi 1.5 |
-| `kimi-k3` | 文本+识图 | ❌ 不可用 | 503 无可用渠道 |
+| ~~`kimi-k3`~~ | 文本+识图 | ❌ 已下架 | 渠道已移除 |
 
 #### 其他
 
@@ -155,6 +155,7 @@ curl https://api.bozzii.com/v1/chat/completions \
 
 | 日期 | 变更 |
 |------|------|
+| 2026-11-04 | `kimi-k3` 与 Gemini 出图渠道正式下架,文档示例已移除 |
 | 2026-11-02 | 确认 `kimi-k3` 不可用(503),`gemini-3-pro-image` 不可用(502) |
 | 2026-11-02 | 新增 DeepSeek v3-0112、v3-0124 版本 |
 | 2026-10-25 | 初始模型清单,33 个模型 |
