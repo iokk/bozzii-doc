@@ -5,8 +5,8 @@ description: 基于实际测试验证的完整 API 规范文档
 
 # 博子 AI API 完整规范文档
 
-> 最后更新: 2026-11-02  
-> 基于实际测试验证,所有示例均可直接运行
+> 最后更新: 2026-11-04  
+> 基于 2026-11-04 实测。模型可用性会变化,以 `GET /v1/models` 和[模型清单](/guides/models/)为准
 
 ## 目录
 
@@ -125,7 +125,7 @@ curl https://api.bozzii.com/v1/models \
   -H "anthropic-version: 2023-06-01"
 ```
 
-**响应示例 (33 个模型):**
+**响应示例(节选):**
 
 ```json
 {
@@ -164,12 +164,12 @@ curl https://api.bozzii.com/v1/models \
 
 ### 海外模型(仅限开发测试)
 
-| 模型 ID | 厂商 | 适用场景 |
+| 模型 ID | 厂商 | 当前状态 |
 |---|---|---|
-| `claude-sonnet-5-5` | Anthropic | 识图、长文本 |
-| `claude-opus-5` | Anthropic | 复杂推理 |
-| `gpt-6-astra` | OpenAI | 通用对话 |
-| ~~`gemini-3-pro-image`~~ | Google | 生图(已下架) |
+| `gpt-6-luna`、`gpt-5.6-sol` | OpenAI | ✅ Chat、Messages 可用,约 3 秒 |
+| `gpt-6-astra`、`gpt-6.1-sol`、`gpt-6.1-terra` | OpenAI | ✅ Chat、Messages 可用,约 7～9 秒 |
+| `claude-sonnet-5-5`、`claude-opus-5` 等 | Anthropic | ⚠️ 仅限 Claude Code 客户端,直接调用返回 403/503 |
+| `gpt-image-2.5-flare`、`gpt-image-2` | OpenAI | ✅ 生图可用 |
 
 ⚠️ **海外模型使用限制:**
 - 不对个人开放,仅限经审核企业客户
@@ -179,7 +179,12 @@ curl https://api.bozzii.com/v1/models \
 
 ### 已知不可用的模型
 
-- **kimi-k3** - 已下架
+- `kimi-k3`、`gemini-3-pro-image`:已下架
+- `grok-4.6`、`grok-4.7`:502 上游错误
+- `MiniMax-H3`:404 路由错误
+- `claude-sonnet-5`、`claude-opus-4-8`:503 无可用渠道
+
+完整状态见[模型清单](/guides/models/)。
 
 ---
 
@@ -369,7 +374,7 @@ curl https://api.bozzii.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "claude-sonnet-5-5",
+    "model": "deepseek-v4-flash",
     "max_tokens": 2048,
     "messages": [{"role": "user", "content": "写一篇关于 AI 的文章"}],
     "stream": true
@@ -389,7 +394,7 @@ curl https://api.bozzii.com/v1/messages \
 
 **注意事项:**
 - 生图模型不支持流式,带 `stream: true` 会返回 400
-- Claude 系模型用 Messages 流式时,`max_tokens` 必填
+- Messages 协议的 `max_tokens` 是必填参数
 - 客户端读取超时建议 ≥ 60 秒
 
 ---
@@ -398,7 +403,7 @@ curl https://api.bozzii.com/v1/messages \
 
 ### 识图(图片输入)
 
-三种协议都支持图片输入,已验证模型: `claude-sonnet-5-5`、`glm-5.3`、`deepseek-v4-pro`。
+三种协议都支持图片输入,国产模型推荐 `glm-5.3`。
 
 #### Chat 协议
 
@@ -440,7 +445,7 @@ curl https://api.bozzii.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "claude-sonnet-5-5",
+    "model": "glm-5.3",
     "max_tokens": 512,
     "messages": [{
       "role": "user",
@@ -480,7 +485,6 @@ curl https://api.bozzii.com/v1/messages \
 - 建议单张 < 20MB
 
 **识图注意事项:**
-- 已验证可用: `claude-sonnet-5-5`
 - `glm-5.3` 会先由辅助视觉模型看图,回复开头带"【辅助识图…】"
 - 小字识别: 字号 ≥ 90px 准确率高,< 52px 可能出错
 
@@ -488,48 +492,9 @@ curl https://api.bozzii.com/v1/messages \
 
 ### 生图(图片输出)
 
-#### Gemini 原生(已下架)
+生图模型都属于海外模型,仅限开发测试。Gemini 出图渠道已下架。
 
-```bash
-curl "https://api.bozzii.com/v1beta/models/gemini-3-pro-image:generateContent" \
-  -H "x-goog-api-key: sk-你的令牌" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "contents": [{
-      "parts": [{"text": "Draw a red apple"}]
-    }]
-  }'
-```
-
-**当前状态:** ❌ 出图渠道已下架
-
-**预期响应格式:**
-
-```json
-{
-  "candidates": [{
-    "content": {
-      "parts": [
-        {"thought": true, "text": "我要画一个红苹果..."},
-        {
-          "fileData": {
-            "mimeType": "image/jpeg",
-            "fileUri": "https://external-cdn.com/xxx.jpg"
-          }
-        },
-        {"text": "![](https://external-cdn.com/xxx.jpg)"}
-      ]
-    }
-  }]
-}
-```
-
-**注意事项:**
-- 图片是外链,托管在第三方 CDN,请自行下载保存
-- 耗时约 13～15 秒
-- 不支持流式
-
-#### GPT Image(文档已说明,未实测)
+#### GPT Image(推荐)
 
 ```bash
 curl https://api.bozzii.com/v1/images/generations \
@@ -542,9 +507,16 @@ curl https://api.bozzii.com/v1/images/generations \
   }'
 ```
 
-**响应:** `data[0].b64_json`(base64 编码的 PNG)
+| 模型 | 实测耗时 | 返回 |
+|---|---|---|
+| `gpt-image-2.5-flare` | 约 24 秒 | `data[0].b64_json`(base64 PNG) |
+| `gpt-image-2` | 约 22 秒 | `data[0].url`(第三方外链,请自行下载保存) |
 
-**耗时:** 约 28 秒,接近网关 30 秒超时上限,务必重试
+耗时接近网关 30 秒超时上限,读取超时设为 60 秒以上,并做重试。
+
+#### nano-banana(走 Chat 接口)
+
+`nano-banana-2.1`、`nano-banana-pro` 要走 `POST /v1/chat/completions`(非流式),图片以 `![image](data:image/png;base64,...)` 嵌在 `content` 里。实测约 50 秒以上,响应 1～2 MB,常出现读取中断,不建议作为首选。详见[生图](/guides/images/)。
 
 ---
 
@@ -556,9 +528,9 @@ curl https://api.bozzii.com/v1/images/generations \
 |---|---|---|---|
 | **401** | 无效令牌 | `{"error":{"message":"无效的令牌"}}` | 检查令牌是否正确 |
 | **400** | 参数错误 | `{"error":{"message":"missing required field: model"}}` | 检查请求格式 |
-| **403** | 权限不足 / 账号池耗尽 | `{"error":{"message":"All available accounts exhausted"}}` | 降低并发,重试 |
+| **403** | 权限不足 | `{"error":{"message":"This group is restricted to Claude Code clients"}}` | 该模型只允许 Claude Code 调用,换模型或改用 Claude Code |
 | **404** | 接口不存在 | - | 检查 URL 路径 |
-| **503** | 模型不可用 | `{"error":{"code":"model_not_found","message":"无可用渠道"}}` | 换用其他模型 |
+| **503** | 模型不可用 / 账号池为空 | `{"error":{"code":"model_not_found","message":"无可用渠道"}}` | 换用其他模型,稍后重试 |
 | **502** | 上游错误 | `{"error":{"type":"bad_response_status_code"}}` | 重试 |
 | **524** | 网关超时 | - | 改用流式,或重试 |
 
@@ -585,18 +557,16 @@ curl https://api.bozzii.com/v1/chat/completions ...
 export ANTHROPIC_BASE_URL="https://api.bozzii.com"  # 不要加 /v1
 ```
 
-**3. Python urllib 默认 UA 导致 502**
+**3. Claude 系列直接调用被拒绝**
 
-Claude 系模型拒绝 `Python-urllib/*` User-Agent
+Claude 系列只服务 Claude Code 客户端。用 curl 或 SDK 调用会得到
+`403 This group is restricted to Claude Code clients` 或 `503 No available accounts`。
+这不是令牌问题,请改用 Claude Code,或换用国产模型(见[模型清单](/guides/models/))。
 
-```python
-# 解决方案 1: 使用官方 SDK
-import anthropic
-client = anthropic.Anthropic(base_url="https://api.bozzii.com", api_key="sk-xxx")
+**4. 视频接口报错**
 
-# 解决方案 2: 修改 UA
-headers = {"User-Agent": "curl/8.7.1"}
-```
+`/v1/videos` 返回 503 `该模型由任务插件认领,但当前没有启用的渠道可服务此模型`,
+`/v1/video/generations` 返回 400 `model_price_error`。视频渠道当前未启用,见[视频接口说明](/guides/video/)。
 
 **4. `content` 为空,`finish_reason` 为 `length`**
 
@@ -645,17 +615,19 @@ def call_with_retry(func, max_retries=3):
 
 ### 并发控制
 
-同时发 6 路以上 Claude 请求可能触发 `403 All available accounts exhausted`:
+Claude 系列的账号池较紧,并发高时会出现 `503 No available accounts`:
 
-- 限制并发数 ≤ 5
-- 遇到 403 立即退避 5～10 秒
+- 限制并发数,批量任务串行或 ≤ 3 路
+- 遇到 503 退避 5～10 秒后重试
+- 长期批量任务建议改用国产模型
 
 ### 超时设置
 
 | 场景 | 建议超时 | 原因 |
 |---|---|---|
 | 普通对话 | 30 秒 | 网关非流式超时约 30 秒 |
-| 生图 | 60 秒以上 | 耗时 13～30 秒,接近上限 |
+| 生图(GPT Image) | 60 秒以上 | 实测 22～24 秒,接近 30 秒上限 |
+| 生图(nano-banana) | 180 秒以上 | 实测 50 秒以上,响应 1～2 MB |
 | 流式 | 60 秒以上 | 长文本生成可能较慢 |
 
 ### 成本优化
@@ -683,37 +655,30 @@ def call_with_retry(func, max_retries=3):
 | 文本对话 | ✅ 可用 | Chat、Messages、Responses 三种协议 |
 | 流式输出 | ✅ 可用 | SSE 格式,生图除外 |
 | 识图 | ✅ 可用 | 支持 base64 和 HTTPS 链接 |
-| 生图 | ❌ 当前不可用 | Gemini 返回 502,上游问题 |
-| 视频理解 | ❌ 不支持 | 上游未开放 |
-| 视频生成 | ❌ 不支持 | 无此类模型 |
+| 生图 | ✅ 可用(仅限开发测试) | `gpt-image-2.5-flare`、`gpt-image-2`;Gemini 已下架 |
+| 视频生成 | ❌ 暂不可用 | 视频模型在列表中,但渠道未启用,见[视频接口说明](/guides/video/) |
 | Embeddings | ❌ 不支持 | 返回 404 |
 | 语音转写/合成 | ❌ 不支持 | 返回 503 |
 
 ### 使用限制
 
-1. **并发限制**  
-   同一账号同时 6 路以上 Claude 请求可能触发 `403 All available accounts exhausted`
+1. **Claude 仅限 Claude Code**  
+   Claude 系列只服务 Claude Code 客户端,curl 和 SDK 直接调用会被拒绝
 
 2. **超时限制**  
    非流式请求超过约 30 秒会被网关切断(524)
 
-3. **Claude 的输入 token 偏多**  
-   回复 "hi" 时 `input_tokens` 约 516～563,DeepSeek/GLM 仅 30～40,推测网关补了固定前缀
-
-4. **部分 Claude 模型限制采样参数**  
-   `temperature` 和 `top_p` 必须留空或设为 1
-
-5. **海外模型使用范围**  
+3. **海外模型使用范围**  
    不对个人开放,不得用于面向公众的服务,可能随时中断
 
-6. **数据出境**  
+4. **数据出境**  
    平台服务器在美国,使用海外模型时请求会经境外链路,详见[隐私政策](https://ai.bozzii.com/privacy.html)
 
 ### 模型可用性
 
 - 模型清单会动态调整,**用前先 `GET /v1/models`**
-- `kimi-k3` 已下架
-- GPT、Gemini 等上游偶发 502/503,重试多半成功
+- `kimi-k3`、Gemini 出图渠道已下架
+- GPT 系上游偶发 502/503,重试多半成功
 
 ---
 
@@ -725,14 +690,14 @@ def call_with_retry(func, max_retries=3):
 |---|---|---|---|
 | `/v1/models` | GET | ✅ | OpenAI / Anthropic 两种格式 |
 | `/v1/chat/completions` | POST | ✅ | 支持流式 |
-| `/v1/messages` | POST | ✅ | 支持流式,部分模型 403 |
+| `/v1/messages` | POST | ✅ | 支持流式;`deepseek-flash` 返回 502 |
 | `/v1/responses` | POST | ✅ | 非 OpenAI 模型也能用 |
 | `/v1beta/models/{m}:generateContent` | POST | ❌ | Gemini 原生,出图渠道已下架 |
-| `/v1/images/generations` | POST | ❓ | 仅 `gpt-image-*`,未充分验证 |
+| `/v1/images/generations` | POST | ✅ | `gpt-image-2.5-flare`、`gpt-image-2` |
 | `/v1/completions` | POST | ❌ | 404 |
 | `/v1/embeddings` | POST | ❌ | 404 |
 | `/v1/audio/*` | POST | ❌ | 503 |
-| `/v1/videos` | POST | ❌ | 不可用,无视频模型 |
+| `/v1/videos`、`/v1/video/generations` | POST | ❌ | 视频渠道未启用 |
 
 ### SDK 配置示例
 
@@ -764,7 +729,7 @@ client = anthropic.Anthropic(
 )
 
 response = client.messages.create(
-    model="claude-sonnet-5-5",
+    model="deepseek-v4-flash",
     max_tokens=512,
     messages=[{"role": "user", "content": "你好"}]
 )

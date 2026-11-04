@@ -8,7 +8,7 @@ description: 如何应对网络超时、上游错误和并发限制。
 所有非 4xx 错误都建议重试,包括:
 
 - `502`、`503`、`524`:上游临时不可用或网关超时
-- `403 All available accounts exhausted`:并发过高,账号池耗尽
+- `503 No available accounts`:Claude 账号池暂时为空,稍后重试
 - 网络超时、连接中断
 
 ## 重试参数建议
@@ -40,19 +40,20 @@ def call_api_with_retry(func, max_retries=3):
 
 ### 生图任务
 
-生图耗时 13～30 秒,接近网关超时上限:
+GPT Image 实测 22～24 秒,接近网关 30 秒超时上限:
 
 - **客户端读取超时**设为 **60 秒以上**
 - 遇到 `524` 一定重试,大概率成功
-- 非流式请求超过 30 秒会被网关切断
+- `nano-banana` 走 Chat 接口,实测 50 秒以上、响应 1～2 MB,超时要设 180 秒以上,且常有读取中断,重试前先确认是否已经扣费
 
 ### 并发控制
 
-同时发 6 路以上 Claude 请求可能触发 `403 All available accounts exhausted`:
+Claude 系列账号池较紧,并发高时返回 `503 No available accounts`:
 
-- **限制并发数** ≤ 5
+- **限制并发数**,批量任务串行或 ≤ 3 路
 - 用信号量或队列控制
-- 遇到 403 立即退避 5～10 秒
+- 遇到 503 退避 5～10 秒后重试
+- 长期批量任务建议改用国产模型
 
 ### 长文本任务
 
@@ -63,7 +64,8 @@ def call_api_with_retry(func, max_retries=3):
 ## 不要重试的情况
 
 - `400`:参数错误,重试无意义,检查请求格式
-- `401`、`403`(非账号池耗尽):鉴权或权限问题,检查令牌
+- `401`:鉴权失败,检查令牌
+- `403 This group is restricted to Claude Code clients`:Claude 系列只允许 Claude Code 调用,换模型
 - `404`:接口不存在,检查 URL 与协议
 - `429`:触发限流(如有),按 `Retry-After` 响应头等待
 

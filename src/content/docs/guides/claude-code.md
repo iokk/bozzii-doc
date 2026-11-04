@@ -28,9 +28,11 @@ claude --model claude-sonnet-5-5
 
 ## Claude 系模型
 
-直接 `--model <模型名>`，或在会话里 `/model <模型名>`。工具调用（Bash 等）实测通过。
+直接 `--model <模型名>`，或在会话里 `/model <模型名>`。
 
-## 非 Claude 模型（DeepSeek、GLM、Kimi）
+Claude 系列目前限制为只服务 Claude Code 客户端，用 curl 或 SDK 直接调用会被拒绝（403 或 503）。2026-11-04 用模拟 Claude Code 请求头的脚本测试，仍返回 `503 No available accounts`，说明账号池当时也没有可用账号。如果在 Claude Code 里同样报这个错，请稍后重试或改用下面的国产模型。
+
+## 非 Claude 模型（DeepSeek、GLM）
 
 Claude Code 自带的模型目录里没有这些名字，会在本地直接报错 `"deepseek-v4-pro" isn't described by this version's model catalog`，请求不会发到网关。需要 Claude Code 2.1.257 及以上，用 `modelPicker` 加 `behavesAs` 声明：
 
@@ -49,6 +51,4 @@ Claude Code 自带的模型目录里没有这些名字，会在本地直接报�
 
 `ANTHROPIC_DEFAULT_SONNET_MODEL` 和 `ANTHROPIC_CUSTOM_MODEL_OPTION` 这两种写法实测无效，会被同一个目录检查拦截。
 
-:::caution
-`gpt-6-astra`、`gpt-6.1-sol` 不能用于 Claude Code。Claude Code 只走 `/v1/messages`，而这两个模型的 Messages 接口目前返回 403。请通过 Chat 或 Responses 调用。
-:::
+GPT 系列（如 `gpt-6-luna`、`gpt-5.6-sol`）的 Messages 接口 2026-11-04 实测已可用，也可以用同样的 `modelPicker` 写法接入。它们属于海外模型，同样只限开发测试。

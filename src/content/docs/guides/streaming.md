@@ -33,7 +33,7 @@ curl https://api.bozzii.com/v1/messages \
   -H "x-api-key: sk-xxxx" \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
-  -d '{"model":"claude-sonnet-5-5","messages":[{"role":"user","content":"写一篇关于AI的文章"}],"max_tokens":2048,"stream":true}'
+  -d '{"model":"deepseek-v4-flash","messages":[{"role":"user","content":"写一篇关于AI的文章"}],"max_tokens":2048,"stream":true}'
 ```
 
 响应同样是 SSE,事件类型包括:
@@ -46,6 +46,8 @@ curl https://api.bozzii.com/v1/messages \
 - `message_stop`: 结束
 
 ## 注意
+
+Claude 系列目前只服务 Claude Code 客户端,curl 直调会被拒绝;上面的 Messages 示例用 DeepSeek,配置见[Claude Code](/guides/claude-code/)。
 
 - 生图模型**不支持**流式,带 `stream: true` 会被拒绝(400)。
 - Claude 系模型用 Messages 流式时,`max_tokens` 是必填项。

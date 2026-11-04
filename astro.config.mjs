@@ -21,13 +21,12 @@ export default defineConfig({
           { slug: 'guides/models' },
           { slug: 'guides/vision' },
           { slug: 'guides/images' },
-          { slug: 'streaming' },
-          { slug: 'video' },
-          { slug: 'retry' },
+          { slug: 'guides/streaming' },
+          { slug: 'guides/video' },
+          { slug: 'guides/retry' },
         ]},
         { label: '完整规范', items: [
           { slug: 'api-specification', label: 'API 完整规范' },
-          { slug: 'models-full', label: '可用模型清单' },
           { slug: 'quick-reference', label: '快速参考' },
         ]},
         { label: '客户端接入', items: [

@@ -41,12 +41,13 @@ curl https://api.bozzii.com/v1/chat/completions \
 
 ## 推荐模型(国产)
 
-| 模型 ID | 特点 | 速度 | 用途 |
+| 模型 ID | 特点 | 实测耗时 | 用途 |
 |---|---|---|---|
-| `deepseek-v4-flash` | 快速,性价比高 | ⚡️⚡️⚡️ | 日常对话 |
-| `deepseek-v4-pro` | 推理能力强 | ⚡️⚡️ | 复杂推理 |
-| `glm-5.3` | 综合能力均衡 | ⚡️⚡️ | 通用场景 |
-| `glm-5.3-flash` | 快速版本 | ⚡️⚡️⚡️ | 简单任务 |
+| `deepseek-v4-flash` | 快速,性价比高 | 约 3～4 秒 | 日常对话 |
+| `deepseek-v4.1-flash` | 带推理,速度接近 flash | 约 4 秒 | 需要简单推理的日常任务 |
+| `deepseek-v4-pro` | 推理能力强 | 约 5 秒 | 复杂推理,`max_tokens` ≥ 256 |
+| `glm-5.3` | 综合能力均衡,支持识图 | 约 5 秒 | 通用场景、看图 |
+| `glm-5.3-flash` | 快速版本 | 约 4 秒 | 简单任务、流式对话 |
 
 ---
 
@@ -154,6 +155,8 @@ for chunk in stream:
 
 ### Anthropic SDK
 
+国内模型也能走 Anthropic Messages 协议,下面用 DeepSeek 演示。Claude 系列目前只服务 Claude Code,直调会被拒绝。
+
 ```python
 import anthropic
 
@@ -163,7 +166,7 @@ client = anthropic.Anthropic(
 )
 
 response = client.messages.create(
-    model="claude-sonnet-5-5",
+    model="deepseek-v4-flash",
     max_tokens=512,
     messages=[{"role": "user", "content": "你好"}]
 )
@@ -222,6 +225,14 @@ curl https://api.bozzii.com/v1/chat/completions ...
 
 换用其他模型,或稍后重试。
 
+### 403 只允许 Claude Code
+
+```json
+{"error":{"message":"This group is restricted to Claude Code clients (/v1/messages only)"}}
+```
+
+Claude 系列只能通过 Claude Code 调用。改用国产模型,或按[Claude Code](/guides/claude-code/)配置。
+
 ### content 为空
 
 推理模型(`deepseek-v4-pro`)把 token 用在了思考上:
@@ -259,10 +270,11 @@ export ANTHROPIC_API_KEY="sk-你的令牌"
 
 ## 限制说明
 
-1. **并发**: 同时 ≤ 5 路 Claude 请求
-2. **超时**: 非流式约 30 秒,流式建议 60 秒
-3. **推理模型**: `max_tokens` 建议 ≥ 256
-4. **海外模型**: 仅限开发测试,不可面向公众
+1. **超时**: 非流式约 30 秒,流式建议 60 秒以上,GPT Image 约 22～24 秒
+2. **推理模型**: `max_tokens` 建议 ≥ 256,否则 `content` 可能为空
+3. **海外模型**: 仅限开发测试,不可面向公众
+4. **Claude 系列**: 只服务 Claude Code 客户端,curl 和 SDK 直调会返回 403/503
+5. **视频**: 渠道未启用,见[视频接口说明](/guides/video/)
 
 ---
 
