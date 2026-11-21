@@ -13,18 +13,18 @@ description: 铂子 API 支持的接口端点、协议格式与当前能力边�
 | `/v1/chat/completions` | `POST` | ✅ 可用 | OpenAI 标准对话接口，支持流式（SSE）、多模态识图与 Tool Calling |
 | `/v1/responses` | `POST` | ✅ 可用 | OpenAI Responses 协议，非 OpenAI 模型也可通过网关协议转换调用 |
 | `/v1/messages` | `POST` | ✅ 可用 | Anthropic Messages 协议，支持流式与 Tool Calling（详见[模型清单](/guides/models/)兼容性说明） |
-| `/v1/images/generations` | `POST` | ✅ 可用 | 图像生成接口（GPT Image 系列，仅限企业开发测试） |
+| `/v1/images/generations` | `POST` | ✅ 可用 | 图像生成接口（GPT Image 系列，仅限企业开发测试；`gemini-nano-banana-2.1` 请走 `/v1/chat/completions`） |
 
 ## 暂未开放的接口
 
-以下端点当前未启用或无挂载模型，请勿在生产代码中依赖：
+以下端点当前未面向默认分组开放，请勿在生产代码中强依赖：
 
 | 接口路径 | 状态 | 说明 |
 | :--- | :--- | :--- |
 | `/v1/completions` | ❌ 404 | 请使用 `/v1/chat/completions` |
 | `/v1/embeddings` | ❌ 404 | 暂不提供向量嵌入服务 |
 | `/v1/audio/*` | ❌ 503 | 暂不提供语音转写与合成 |
-| `/v1/videos`、`/v1/video/generations` | ❌ 未启用 | 当前无在线视频生成渠道 |
+| `/v1/videos`、`/v1/video/generations` | 🔒 按分组开放 | 异步任务视频生成（如 `MiniMax-H3`），具体可用性以当前分组 `GET /v1/models` 为准 |
 | `/v1/moderations`、`/v1/rerank`、`/v1/batches` | ❌ 未启用 | 暂不提供 |
 
 ## 协议快速对比

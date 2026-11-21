@@ -47,6 +47,7 @@ export default defineConfig({
           items: [
             { slug: 'guides/errors' },
             { slug: 'guides/retry' },
+            { slug: 'guides/security-and-support' },
           ],
         },
         {

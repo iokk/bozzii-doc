@@ -5,7 +5,7 @@ description: 使用 Chat、Messages、Responses 协议传入图片，以及标�
 
 ## 多模态识图（图片输入）
 
-支持 `PNG`、`JPEG`、`WebP`、`GIF` 格式的图片输入，可通过 **Base64 Data URI** 或 **公开 HTTPS 链接** 传入（建议单张图片小于 20 MB）。国产模型推荐使用 `glm-5.3`。
+支持 `PNG`、`JPEG`、`WebP`、`GIF` 格式的图片输入，可通过 **Base64 Data URI** 或 **公开 HTTPS 链接** 传入（建议单张图片小于 **20 MB**，单次 HTTP 请求体上限 **100 MB**）。国产模型推荐使用 `glm-5.3`。
 
 ### Chat Completions 写法
 

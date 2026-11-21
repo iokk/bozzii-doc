@@ -1,6 +1,6 @@
 ---
-title: SDK 与 curl 示例
-description: Python、Node.js（OpenAI / Anthropic SDK）与 Responses 接口的可直接运行示例。
+title: SDK 接入示例
+description: Python、Node.js（OpenAI / Anthropic SDK）与 Responses 接口的可直接运行示例（curl 示例请见快速开始与接口总览）。
 ---
 
 ## Python — OpenAI SDK（推荐）

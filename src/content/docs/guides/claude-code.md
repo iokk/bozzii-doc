@@ -6,7 +6,7 @@ description: 在 Claude Code 中配置铂子 API，支持 Claude 系列及国产
 Claude Code 使用 Anthropic Messages 协议。接入铂子 API 时，**`ANTHROPIC_BASE_URL` 请填写 `https://api.bozzii.com`（不要加 `/v1`）**。
 
 :::caution[合规范围提示]
-在 Claude Code 中使用 `claude-*`、`gpt-*` 等海外模型，仅限经审核的企业客户用于内部开发、测试与调试，请遵守[服务条款](https://ai.bozzii.com/user-agreement)与[隐私政策](https://ai.bozzii.com/privacy-policy)。如需长期用于国产模型编码，可按下方 `modelPicker` 配置切换至 `glm-5.3` 或 `mimo-v2.6-pro`。
+在 Claude Code 中使用 `claude-*`、`gpt-*` 等国际主流模型，仅限经审核的企业客户用于内部开发、测试与调试，请遵守[服务条款](https://ai.bozzii.com/user-agreement)与[隐私政策](https://ai.bozzii.com/privacy-policy)。如需长期用于国产模型编码，可按下方 `modelPicker` 配置切换至 `glm-5.3` 或 `mimo-v2.6-pro`。
 :::
 
 ## 方式一：环境变量（临时/终端会话）
@@ -51,5 +51,5 @@ Claude Code 本地会校验模型目录；未内置的模型名直接传入会�
 ```
 
 :::note[协议兼容说明]
-`glm-5.3`、`glm-5.3-flash`、`hy4`、`mimo-v2.6-pro`、`gpt-6.2-sol` 均原生兼容 `/v1/messages` 接口。`deepseek-*` 系列当前仅支持 Chat Completions 与 Responses 协议，不建议用于 Claude Code。
+`glm-5.3`、`glm-5.3-flash`、`hy4`、`mimo-v2.6-pro`、`gpt-6.2-sol` 均兼容 `/v1/messages` 接口。`deepseek-*` 系列当前仅支持 Chat Completions 与 Responses 协议，不建议用于 Claude Code。
 :::

@@ -3,7 +3,7 @@ title: 铂子 API 文档
 description: 铂子 API 网关接入指南：统一协议、模型清单、客户端配置、计费与排错。
 template: splash
 hero:
-  tagline: 一个 API Key，统一使用 OpenAI、Anthropic 与 Gemini 协议调用主流大模型。
+  tagline: 一个 API Key，统一使用 OpenAI 与 Anthropic 协议调用主流大模型，通过阿里云 CDN 边缘加速无状态中转。
   actions:
     - text: 快速开始
       link: /guides/quickstart/
@@ -25,7 +25,7 @@ import { Card, CardGrid } from '@astrojs/starlight/components';
   <Card title="动态模型目录" icon="information">
     模型列表会随上游状态实时同步。生产集成前请通过 `GET /v1/models` 获取最新可用模型 ID。
   </Card>
-  <Card title="合规与条款" icon="document">
-    接入前请阅读[服务条款](https://ai.bozzii.com/user-agreement)与[隐私政策](https://ai.bozzii.com/privacy-policy)，海外模型仅限经审核企业用于内部开发测试。
+  <Card title="隐私与企业合规" icon="document">
+    通过阿里云 CDN 就近边缘节点加速接入，网关仅作无状态中转、不落盘对话内容，仅记录元数据，承诺不用于任何模型训练。详见[安全、隐私与客服支持](/guides/security-and-support/)、[服务条款](https://ai.bozzii.com/user-agreement)与[隐私政策](https://ai.bozzii.com/privacy-policy)。
   </Card>
 </CardGrid>

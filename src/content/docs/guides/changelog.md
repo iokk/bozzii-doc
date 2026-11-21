@@ -8,9 +8,9 @@ description: 铂子 API 文档站点与接口能力更新记录。
 - **全站文档重构**：统一品牌名称为「铂子 API」，合并冗余页面，按「快速入门 → 协议与能力 → 模型与计费 → 客户端与 SDK → 最佳实践与排错」重组结构。
 - **实时校准模型与协议矩阵**：
   - 新增国产主力模型 `hy4`、`hy4-flash`、`mimo-v2.6-flash`、`mimo-v2.6-pro` 与 `deepseek-v4.1-flash`。
-  - 新增海外开发测试模型 `gpt-6.2-sol`、`gpt-6.2-astra`、`grok-4.6`、`grok-4.7`；`claude-sonnet-5-5`、`claude-opus-5-5` 等支持通过 SDK / curl 与 Claude Code 直接调用。
+  - 新增国际主流开发测试模型 `gpt-6.2-sol`、`gpt-6.2-astra`、`grok-4.6`、`grok-4.7`；`claude-sonnet-5-5`、`claude-opus-5-5` 等支持通过 SDK / curl 与 Claude Code 直接调用。
   - 生图文档新增 `gpt-image-2.6-flare`、`gpt-image-2.6-sunburst` 与 `gemini-nano-banana-2.1` 说明。
-  - 补充 Tool Calling（函数调用）、计费与消费查询说明，并接入[服务条款](https://ai.bozzii.com/user-agreement)与[隐私政策](https://ai.bozzii.com/privacy-policy)链接。
+  - 补充完整计费细则（7.30 汇率、缓存读写、长上下文阶梯、谷时半价、失败退费）、限流与超时保活参数（1,000/2,000 RPM、120s/300s/600s、10s `: PING`、100MB 请求体）以及[安全、隐私与客服支持](/guides/security-and-support/)指南。
 - **修正代码示例**：修复重试示例中无差别重试 4xx 错误的逻辑，补充精准状态码过滤与 `User-Agent` 注意事项。
 
 ## 2026-11-04

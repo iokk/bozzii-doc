@@ -4,7 +4,7 @@ description: 使用 GPT Image 与 Gemini 生图模型生成图片的参数、返
 ---
 
 :::caution[使用范围限制]
-生图模型均属于海外模型，**不对个人用户开放，仅限经审核企业客户用于内部开发、测试与调试**，不得用于面向终端用户或中国境内公众的产品服务。接入前请阅读[服务条款](https://ai.bozzii.com/user-agreement)与[隐私政策](https://ai.bozzii.com/privacy-policy)。
+生图系列模型**不对个人用户开放，仅限经审核的企业客户用于内部开发、测试与调试**，不得用于面向中国境内公众的终端产品服务。接入前请阅读[服务条款](https://ai.bozzii.com/user-agreement)与[隐私政策](https://ai.bozzii.com/privacy-policy)。
 :::
 
 ## GPT Image 系列（推荐）
@@ -63,4 +63,4 @@ curl https://api.bozzii.com/v1/chat/completions \
   }'
 ```
 
-生成的图片会以 Markdown Base64 形式（`![image](data:image/png;base64,...)`）或图文块返回在响应中，实测耗时约 15~50 秒，客户端读取超时建议设为 **120 秒以上**。
+生成的图片会以 Markdown Base64 形式（`![image](data:image/png;base64,...)`）或图文块返回在响应中，实测耗时约 15~50 秒。网关非流式上限为 **120 秒**，客户端读取超时建议设为 **120 秒**（为大图下载预留余量）。
