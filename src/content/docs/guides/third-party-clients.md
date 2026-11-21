@@ -1,18 +1,40 @@
 ---
-title: 第三方客户端
-description: XSEEK、Cherry Studio 等客户端的配置要点。
+title: 第三方客户端配置
+description: Cherry Studio、NextChat、LobeChat 等桌面与 Web 客户端接入铂子 API 的通用配置。
 ---
 
-1. 渠道类型选 **OpenAI 兼容**。客户端若有“支持 Responses API”开关，保持关闭即可，Chat Completions 对所有在线文本模型都可用。
-2. Base URL 填 `https://api.bozzii.com/v1`。若要求填完整接口地址，填 `https://api.bozzii.com/v1/chat/completions`。不要填 `/v1/responses`，也不要漏掉 `/v1`。
-3. 模型名必须与 `/v1/models` 返回的完全一致。
-4. 对 `claude-sonnet-5-5`、`claude-fable-5`、`claude-opus-4-8`，把 temperature、top_p 留空或设为 1，否则返回 400。
-5. 探测失败时，先在终端复现：
+大多数第三方 AI 客户端均支持 **OpenAI 兼容（OpenAI-Compatible）** 模式。
+
+## 通用填写项
+
+| 配置项 | 填写值 | 说明 |
+| :--- | :--- | :--- |
+| 接口类型 / 协议 | OpenAI 兼容 | 若客户端有“启用 Responses API”开关，建议保持关闭，使用 Chat Completions 兼容性最好 |
+| API 地址（Base URL） | `https://api.bozzii.com/v1` | 如客户端要求填完整端点路径，则填 `https://api.bozzii.com/v1/chat/completions` |
+| API 密钥（API Key） | `sk-你的令牌` | 从控制台获取 |
+| 模型名称 | 与 `GET /v1/models` 一致 | 例如 `deepseek-v4.1-flash`、`glm-5.3`、`mimo-v2.6-flash` |
+
+## 常见客户端示例
+
+### Cherry Studio
+- **接口地址**：`https://api.bozzii.com/v1`
+- **API 密钥**：`sk-你的令牌`
+- 点击「管理 / 获取模型」即可自动拉取当前在线模型列表。
+
+### NextChat / LobeChat
+- **接口地址（Base URL）**：`https://api.bozzii.com/v1`
+- **API Key**：`sk-你的令牌`
+- 自定义模型填写 `deepseek-v4.1-flash`、`deepseek-v4-pro` 或 `glm-5.3`。
+
+## 客户端连通性自检
+
+如果客户端提示连接失败，建议先在终端执行以下命令确认密钥与模型本身正常：
 
 ```bash
 curl -s https://api.bozzii.com/v1/chat/completions \
-  -H "Authorization: Bearer sk-xxxx" -H "content-type: application/json" \
-  -d '{"model":"deepseek-v4-pro","messages":[{"role":"user","content":"hi"}],"max_tokens":64}'
+  -H "Authorization: Bearer sk-你的令牌" \
+  -H "Content-Type: application/json" \
+  -d '{"model":"deepseek-v4.1-flash","messages":[{"role":"user","content":"hi"}],"max_tokens":64}'
 ```
 
-错误对照见[常见错误](/guides/errors/)。
+若终端返回正常 JSON 而客户端报错，通常是因为客户端漏填 `/v1` 或多填了尾斜杠/重复路径。更多报错请参考 [常见错误与排查](/guides/errors/)。

@@ -12,33 +12,49 @@ export default defineConfig({
       defaultLocale: 'root',
       locales: { root: { label: '简体中文', lang: 'zh-CN' } },
       sidebar: [
-        { label: '快速开始', items: [
-          { slug: 'guides/quickstart' },
-          { slug: 'guides/base-url-auth' },
-        ]},
-        { label: '接口参考', items: [
-          { slug: 'guides/endpoints' },
-          { slug: 'guides/models' },
-          { slug: 'guides/vision' },
-          { slug: 'guides/images' },
-          { slug: 'guides/streaming' },
-          { slug: 'guides/video' },
-          { slug: 'guides/retry' },
-        ]},
-        { label: '完整规范', items: [
-          { slug: 'api-specification', label: 'API 完整规范' },
-          { slug: 'quick-reference', label: '快速参考' },
-        ]},
-        { label: '客户端接入', items: [
-          { slug: 'guides/claude-code' },
-          { slug: 'guides/sdk' },
-          { slug: 'guides/third-party-clients' },
-        ]},
-        { label: '排错与注意事项', items: [
-          { slug: 'guides/errors' },
-          { slug: 'guides/notes' },
-        ]},
-        { label: '更新日志', items: [{ slug: 'guides/changelog' }] },
+        {
+          label: '快速入门',
+          items: [
+            { slug: 'guides/quickstart' },
+            { slug: 'guides/base-url-auth' },
+          ],
+        },
+        {
+          label: '协议与能力',
+          items: [
+            { slug: 'guides/endpoints' },
+            { slug: 'guides/streaming' },
+            { slug: 'guides/vision' },
+            { slug: 'guides/images' },
+          ],
+        },
+        {
+          label: '模型与计费',
+          items: [
+            { slug: 'guides/models' },
+          ],
+        },
+        {
+          label: '客户端与 SDK',
+          items: [
+            { slug: 'guides/sdk' },
+            { slug: 'guides/claude-code' },
+            { slug: 'guides/third-party-clients' },
+          ],
+        },
+        {
+          label: '最佳实践与排错',
+          items: [
+            { slug: 'guides/errors' },
+            { slug: 'guides/retry' },
+          ],
+        },
+        {
+          label: '更新日志',
+          items: [
+            { slug: 'guides/changelog' },
+          ],
+        },
       ],
     }),
   ],

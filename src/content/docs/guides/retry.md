@@ -1,80 +1,52 @@
 ---
-title: 重试与错误处理
-description: 如何应对网络超时、上游错误和并发限制。
+title: 超时、重试与生产最佳实践
+description: 面向生产环境的超时配置、可重试状态码判断与并发控制建议。
 ---
 
-## 基本策略
+## 超时配置建议
 
-所有非 4xx 错误都建议重试,包括:
+不同任务的响应耗时差异较大，请勿对所有接口使用同一个短超时：
 
-- `502`、`503`、`524`:上游临时不可用或网关超时
-- `503 No available accounts`:Claude 账号池暂时为空,稍后重试
-- 网络超时、连接中断
+| 场景 | 建议客户端读取超时 | 说明 |
+| :--- | :--- | :--- |
+| 普通短对话（非流式） | `30~60 秒` | 主力 Flash 模型通常 `2~5 秒` 返回 |
+| 长文本 / 复杂推理 | `60~120 秒` + **开启流式** | 使用 `stream: true` 避免网关非流式超时（`524`） |
+| 图像生成（GPT Image） | `90~120 秒` | 实测耗时约 `13~45 秒`，高并发下可能接近 `60 秒` |
+| 图像生成（Nano Banana） | `120~180 秒` | 响应体较大，需预留充足下载时间 |
 
-## 重试参数建议
+## 精准重试策略
+
+**只对瞬时故障重试，不要对请求本身有误的 4xx 错误盲目重试**：
+
+- **建议重试**：`429`、`500`（偶发）、`502`、`503`、`504`、`524`，以及网络连接超时/断开。
+- **不要重试**：`400`（参数错误）、`401`（令牌无效）、`403`（权限/WAF 拦截）、`404`（路径错误）。
+
+### Python 生产级重试示例（指数退避 + 抖动）
 
 ```python
-import time
 import random
+import time
+from openai import APIStatusError, APITimeoutError, APIConnectionError
 
-def call_api_with_retry(func, max_retries=3):
+RETRYABLE_STATUS = {429, 500, 502, 503, 504, 524}
+
+def call_with_retry(func, max_retries=3):
     for attempt in range(max_retries):
         try:
             return func()
-        except Exception as e:
+        except (APITimeoutError, APIConnectionError):
             if attempt == max_retries - 1:
                 raise
-            # 指数退避 + 随机抖动
-            wait = min(2 ** attempt + random.uniform(0, 1), 10)
-            time.sleep(wait)
+        except APIStatusError as e:
+            if e.status_code not in RETRYABLE_STATUS or attempt == max_retries - 1:
+                raise
+
+        wait = min((2 ** attempt) + random.uniform(0, 1), 10)
+        time.sleep(wait)
 ```
 
-**关键点:**
+## 并发与高可用建议
 
-- **初始延迟** 1～2 秒起步
-- **指数退避**,但上限设 10 秒,避免过长等待
-- **随机抖动**,避免多个客户端同时重试形成雷鸣群
-- **最多重试 3 次**,失败后向上层报告
-
-## 特定场景
-
-### 生图任务
-
-GPT Image 实测 22～24 秒,接近网关 30 秒超时上限:
-
-- **客户端读取超时**设为 **60 秒以上**
-- 遇到 `524` 一定重试,大概率成功
-- `nano-banana` 走 Chat 接口,实测 50 秒以上、响应 1～2 MB,超时要设 180 秒以上,且常有读取中断,重试前先确认是否已经扣费
-
-### 并发控制
-
-Claude 系列账号池较紧,并发高时返回 `503 No available accounts`:
-
-- **限制并发数**,批量任务串行或 ≤ 3 路
-- 用信号量或队列控制
-- 遇到 503 退避 5～10 秒后重试
-- 长期批量任务建议改用国产模型
-
-### 长文本任务
-
-- **用流式**避免 30 秒非流式超时
-- 客户端读取超时设为 60 秒以上
-- `max_tokens` 不要设太小,推理模型建议 ≥ 256
-
-## 不要重试的情况
-
-- `400`:参数错误,重试无意义,检查请求格式
-- `401`:鉴权失败,检查令牌
-- `403 This group is restricted to Claude Code clients`:Claude 系列只允许 Claude Code 调用,换模型
-- `404`:接口不存在,检查 URL 与协议
-- `429`:触发限流(如有),按 `Retry-After` 响应头等待
-
-## 日志与监控
-
-建议记录:
-
-- 请求 ID(响应头 `x-request-id`,如有)
-- 模型名、耗时、状态码
-- 重试次数与最终结果
-
-上游偶发错误是常态,良好的重试策略可以把成功率从 95% 提升到 99.5% 以上。
+1. **客户端限流**：批量任务建议使用信号量（Semaphore）或队列控制并发度，避免瞬间突发高并发触发 `429` 或上游拥塞。
+2. **动态容灾切换**：建议在业务侧保留「主力模型 + 备选模型」降级配置（例如 `deepseek-v4.1-flash` 异常时自动切换至 `mimo-v2.6-flash` 或 `glm-5.3-flash`）。
+3. **保留请求追踪信息**：记录响应状态码、耗时与错误体中的 `request id`，如遇问题提交工单时一并提供，可大幅加快排查效率。

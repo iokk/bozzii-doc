@@ -1,54 +1,55 @@
 ---
-title: Claude Code
-description: 在 Claude Code 中使用铂子 API。
+title: Claude Code 接入指南
+description: 在 Claude Code 中配置铂子 API，支持 Claude 系列及国产 GLM / MiMo 模型。
 ---
 
-:::caution[使用范围]
-Claude Code 使用的是 Anthropic 协议。本页中的 `claude-*` 模型属于海外模型，仅限经审核的企业用于内部开发、测试和调试，不得用于向终端用户或中国境内公众提供服务。非 Claude 的国产模型也可以通过同样的配置使用，见[模型清单](/guides/models/)。
+Claude Code 使用 Anthropic Messages 协议。接入铂子 API 时，**`ANTHROPIC_BASE_URL` 请填写 `https://api.bozzii.com`（不要加 `/v1`）**。
+
+:::caution[合规范围提示]
+在 Claude Code 中使用 `claude-*`、`gpt-*` 等海外模型，仅限经审核的企业客户用于内部开发、测试与调试，请遵守[服务条款](https://ai.bozzii.com/user-agreement)与[隐私政策](https://ai.bozzii.com/privacy-policy)。如需长期用于国产模型编码，可按下方 `modelPicker` 配置切换至 `glm-5.3` 或 `mimo-v2.6-pro`。
 :::
 
-## 环境变量（最简单）
+## 方式一：环境变量（临时/终端会话）
 
 ```bash
 export ANTHROPIC_BASE_URL="https://api.bozzii.com"   # 不要加 /v1
-export ANTHROPIC_API_KEY="sk-xxxx"
+export ANTHROPIC_API_KEY="sk-你的令牌"
 claude --model claude-sonnet-5-5
 ```
 
-## 写入 `~/.claude/settings.json`（长期生效）
+## 方式二：写入 `~/.claude/settings.json`（长期生效）
 
 ```json
 {
   "env": {
     "ANTHROPIC_BASE_URL": "https://api.bozzii.com",
-    "ANTHROPIC_API_KEY": "sk-xxxx"
+    "ANTHROPIC_API_KEY": "sk-你的令牌"
   }
 }
 ```
 
-## Claude 系模型
+配置完成后，可通过 `claude --model <模型名>` 启动，或在会话内使用 `/model <模型名>` 切换。
 
-直接 `--model <模型名>`，或在会话里 `/model <模型名>`。
+## 在 Claude Code 中使用非 Claude 模型（GLM / MiMo / GPT）
 
-Claude 系列目前限制为只服务 Claude Code 客户端，用 curl 或 SDK 直接调用会被拒绝（403 或 503）。2026-11-04 用模拟 Claude Code 请求头的脚本测试，仍返回 `503 No available accounts`，说明账号池当时也没有可用账号。如果在 Claude Code 里同样报这个错，请稍后重试或改用下面的国产模型。
-
-## 非 Claude 模型（DeepSeek、GLM）
-
-Claude Code 自带的模型目录里没有这些名字，会在本地直接报错 `"deepseek-v4-pro" isn't described by this version's model catalog`，请求不会发到网关。需要 Claude Code 2.1.257 及以上，用 `modelPicker` 加 `behavesAs` 声明：
+Claude Code 本地会校验模型目录；未内置的模型名直接传入会触发本地报错 `"<model>" isn't described by this version's model catalog`。在 Claude Code `2.1.257` 及以上版本中，可在 `~/.claude/settings.json` 通过 `modelPicker` 声明：
 
 ```json
 {
+  "env": {
+    "ANTHROPIC_BASE_URL": "https://api.bozzii.com",
+    "ANTHROPIC_API_KEY": "sk-你的令牌"
+  },
   "modelPicker": {
     "options": [
-      { "model": "deepseek-v4-pro", "label": "DeepSeek V4 Pro", "behavesAs": "claude-sonnet-5-5" },
-      { "model": "glm-5.3",         "label": "GLM 5.3",         "behavesAs": "claude-sonnet-5-5" }
+      { "model": "glm-5.3", "label": "GLM 5.3", "behavesAs": "claude-sonnet-5-5" },
+      { "model": "mimo-v2.6-pro", "label": "MiMo V2.6 Pro", "behavesAs": "claude-sonnet-5-5" },
+      { "model": "gpt-6.2-sol", "label": "GPT 6.2 Sol", "behavesAs": "claude-sonnet-5-5" }
     ]
   }
 }
 ```
 
-然后 `claude --model deepseek-v4-pro`，或在 `/model` 里选择。
-
-`ANTHROPIC_DEFAULT_SONNET_MODEL` 和 `ANTHROPIC_CUSTOM_MODEL_OPTION` 这两种写法实测无效，会被同一个目录检查拦截。
-
-GPT 系列（如 `gpt-6-luna`、`gpt-5.6-sol`）的 Messages 接口 2026-11-04 实测已可用，也可以用同样的 `modelPicker` 写法接入。它们属于海外模型，同样只限开发测试。
+:::note[协议兼容说明]
+`glm-5.3`、`glm-5.3-flash`、`hy4`、`mimo-v2.6-pro`、`gpt-6.2-sol` 均原生兼容 `/v1/messages` 接口。`deepseek-*` 系列当前仅支持 Chat Completions 与 Responses 协议，不建议用于 Claude Code。
+:::

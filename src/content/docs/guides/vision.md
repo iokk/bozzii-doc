@@ -1,17 +1,113 @@
 ---
-title: 识图（图片输入）
-description: 三种协议下传入图片的写法。
+title: 多模态识图与工具调用
+description: 使用 Chat、Messages、Responses 协议传入图片，以及标准 Tool Calling（函数调用）写法。
 ---
 
-Chat、Messages、Responses 三种协议都支持图片输入，已用 `claude-sonnet-5-5`、`deepseek-v4-pro`、`glm-5.3` 验证。
+## 多模态识图（图片输入）
 
-| 协议 | 图片写法 |
-|---|---|
-| Chat | `{"type":"image_url","image_url":{"url":"data:image/png;base64,..."}}`，也可填 https 链接 |
-| Messages | `{"type":"image","source":{"type":"base64","media_type":"image/png","data":"..."}}` |
-| Responses | `{"type":"input_image","image_url":"data:image/png;base64,..."}` |
+支持 `PNG`、`JPEG`、`WebP`、`GIF` 格式的图片输入，可通过 **Base64 Data URI** 或 **公开 HTTPS 链接** 传入（建议单张图片小于 20 MB）。国产模型推荐使用 `glm-5.3`。
 
-## 注意
+### Chat Completions 写法
 
-- ~~`kimi-k3`~~（已下架）曾用于识图测试，对小字识别不准：52px 的字会出错，90px 以上全部正确。识别票据或截图时，先放大或裁剪。
-- `glm-5.3` 会先由辅助视觉模型看图，再由 GLM 作答，回复开头会带“【辅助识图…】”标记。
+```bash
+curl https://api.bozzii.com/v1/chat/completions \
+  -H "Authorization: Bearer sk-你的令牌" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "glm-5.3",
+    "messages": [{
+      "role": "user",
+      "content": [
+        {"type": "text", "text": "请描述这张图片的内容"},
+        {
+          "type": "image_url",
+          "image_url": {"url": "https://example.com/image.jpg"}
+        }
+      ]
+    }],
+    "max_tokens": 512
+  }'
+```
+
+如需使用 Base64，将 `url` 替换为 `"data:image/png;base64,iVBORw0KGgo..."`。
+
+### Anthropic Messages 写法
+
+```json
+{
+  "model": "glm-5.3",
+  "max_tokens": 512,
+  "messages": [{
+    "role": "user",
+    "content": [
+      {"type": "text", "text": "请描述这张图片的内容"},
+      {
+        "type": "image",
+        "source": {
+          "type": "base64",
+          "media_type": "image/png",
+          "data": "iVBORw0KGgo..."
+        }
+      }
+    ]
+  }]
+}
+```
+
+### OpenAI Responses 写法
+
+```json
+{
+  "model": "glm-5.3",
+  "input": [{
+    "role": "user",
+    "content": [
+      {"type": "input_text", "text": "请描述这张图片的内容"},
+      {"type": "input_image", "image_url": "data:image/png;base64,iVBORw0KGgo..."}
+    ]
+  }]
+}
+```
+
+:::tip[票据与小字识别建议]
+识别包含密集小字、表格或票据的截图时，建议先对关键区域适当裁剪或放大，可显著提升文字提取准确率。
+:::
+
+---
+
+## Tool Calling（函数调用）
+
+主流文本模型（如 `deepseek-v4.1-flash`、`deepseek-v4-pro`、`glm-5.3`、`mimo-v2.6-flash`、`gpt-6.2-sol`、`claude-sonnet-5-5`）均支持标准 Function Calling / Tools 协议。
+
+### Chat Completions 示例
+
+```bash
+curl https://api.bozzii.com/v1/chat/completions \
+  -H "Authorization: Bearer sk-你的令牌" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "deepseek-v4.1-flash",
+    "messages": [
+      {"role": "user", "content": "帮我查一下北京今天的天气"}
+    ],
+    "tools": [
+      {
+        "type": "function",
+        "function": {
+          "name": "get_weather",
+          "description": "查询指定城市的实时天气",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "city": {"type": "string", "description": "城市名称，例如 北京"}
+            },
+            "required": ["city"]
+          }
+        }
+      }
+    ],
+    "max_tokens": 256
+  }'
+```
+
+模型需要调用工具时，会在 `choices[0].message.tool_calls` 中返回函数名与 JSON 参数字符串，`finish_reason` 为 `"tool_calls"`；客户端执行函数后，将结果以 `role: "tool"` 消息回传即可完成多轮调用。

@@ -1,17 +1,22 @@
 ---
 title: 更新日志
-description: 文档与模型清单的变更记录。
+description: 铂子 API 文档站点与接口能力更新记录。
 ---
+
+## 2026-11-22
+
+- **全站文档重构**：统一品牌名称为「铂子 API」，合并冗余页面，按「快速入门 → 协议与能力 → 模型与计费 → 客户端与 SDK → 最佳实践与排错」重组结构。
+- **实时校准模型与协议矩阵**：
+  - 新增国产主力模型 `hy4`、`hy4-flash`、`mimo-v2.6-flash`、`mimo-v2.6-pro` 与 `deepseek-v4.1-flash`。
+  - 新增海外开发测试模型 `gpt-6.2-sol`、`gpt-6.2-astra`、`grok-4.6`、`grok-4.7`；`claude-sonnet-5-5`、`claude-opus-5-5` 等支持通过 SDK / curl 与 Claude Code 直接调用。
+  - 生图文档新增 `gpt-image-2.6-flare`、`gpt-image-2.6-sunburst` 与 `gemini-nano-banana-2.1` 说明。
+  - 补充 Tool Calling（函数调用）、计费与消费查询说明，并接入[服务条款](https://ai.bozzii.com/user-agreement)与[隐私政策](https://ai.bozzii.com/privacy-policy)链接。
+- **修正代码示例**：修复重试示例中无差别重试 4xx 错误的逻辑，补充精准状态码过滤与 `User-Agent` 注意事项。
 
 ## 2026-11-04
 
-- 按当日实测更新模型清单：Claude 系列改为只能通过 Claude Code 使用；GPT 系列 Chat 与 Messages 均可用；`deepseek-flash` 的 Messages 返回 502。
-- 新增不可用清单：`grok-4.6`、`grok-4.7`（502）、`MiniMax-H3`（404）、`claude-sonnet-5` 与 `claude-opus-4-8`（503）。
-- 生图页改为 `gpt-image-2.5-flare`、`gpt-image-2` 与 `nano-banana`；Gemini 出图渠道已下架。
-- 视频页更新为实测结论：`/v1/videos` 返回 503、`/v1/video/generations` 返回 400，渠道未启用。
-- 已下架：`kimi-k3`、`gemini-3-pro-image`、`gemini-3-pro-image-preview`。
+- 更新模型清单、生图模型列表及接口状态说明。
 
 ## 2026-10-29
 
-- 文档站首次发布：快速开始、接口一览、模型清单、识图、生图、Claude Code、SDK 示例、第三方客户端、常见错误、注意事项。
-- 内容依据 2026-10-22～23 的完整扫描。
+- 文档站点首次上线。
