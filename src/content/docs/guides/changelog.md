@@ -3,6 +3,10 @@ title: 更新日志
 description: 铂子 API 文档站点与接口能力更新记录。
 ---
 
+## 2026-11-24
+
+- **模型清单同步**：新增 Google Gemini 4 系列（`gemini-4-argon`、`gemini-4-carbon`、`gemini-4-hydrogen`、`gemini-4-neon`、`gemini-3.8-flash`）、`claude-fable-5-2` 与生图模型 `seedream-5-5`。
+
 ## 2026-11-22
 
 - **全站文档重构**：统一品牌名称为「铂子 API」，合并冗余页面，按「快速入门 → 协议与能力 → 模型与计费 → 客户端与 SDK → 最佳实践与排错」重组结构。

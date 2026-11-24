@@ -33,6 +33,7 @@ curl https://api.bozzii.com/v1/images/generations \
 | `gpt-image-2.5-flare` | 约 13~25 秒 | `data[0].b64_json` | 返回 Base64 编码 PNG，需本地解码保存 |
 | `gpt-image-2.5-sunburst` | 约 15~30 秒 | `data[0].b64_json` | 2.5 系列，返回 Base64 |
 | `gpt-image-2` | 约 20~30 秒 | `data[0].url` | 返回签名图片外链 |
+| `seedream-5-5` | 约 15~30 秒 | `data[0].url` / `b64_json` | Seedream 5.5 图像生成模型 |
 
 ### 常用请求参数
 

@@ -42,7 +42,9 @@ GPT、Claude、Grok 及生图系列模型**仅面向经审核的企业客户开�
 | `claude-sonnet-5-5` | Anthropic | ✅ | ✅ | ✅ | 通用编码与主力对话，**支持 SDK / curl 直接调用及 Claude Code** |
 | `claude-opus-5-5` | Anthropic | ✅ | ✅ | ✅ | 高阶推理与复杂工程任务 |
 | `claude-haiku-5-5` | Anthropic | ✅ | ✅ | ✅ | 高并发轻量版本，约 3 秒响应 |
-| `claude-fable-5-1` | Anthropic | ✅ | ✅ | ✅ | 创意与长文本写作 |
+| `claude-fable-5-1` / `claude-fable-5-2` | Anthropic | ✅ | ✅ | ✅ | 创意与长文本写作（`fable-5-2` 建议走 Claude Code） |
+| `gemini-4-argon` / `gemini-4-carbon` / `gemini-4-hydrogen` / `gemini-4-neon` | Google | ✅ | ✅ | ✅ | Gemini 4 系列对话与推理模型 |
+| `gemini-3.8-flash` | Google | ✅ | ✅ | ✅ | 轻量高速版本 |
 | `grok-4.6` / `grok-4.7` | xAI | ✅ | ✅ | ✅ | 支持推理输出 |
 
 生图模型清单与调用方式请见 [图像生成](/guides/images/)。部分固定日期快照（如 `deepseek-v4.1-flash-1017`）及按分组开放的专用模型（如 `jev-latest`、异步视频模型 `MiniMax-H3`）以当前令牌调用 `GET /v1/models` 的实际返回为准。
