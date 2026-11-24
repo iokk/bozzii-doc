@@ -3,6 +3,10 @@ title: 更新日志
 description: 铂子 API 文档站点与接口能力更新记录。
 ---
 
+## 2026-11-25
+
+- **新增视频生成文档**：上线 [视频生成](/guides/videos/) 接入指南，补充 `sd-2.5` / `sd-2.5-flash` 的 `/v1/videos` 异步调用流程、图生视频/首尾帧/多模态参考参数规范、公网 URL 约束及 `metadata.resolution` / `metadata.ratio` 推荐写法。
+
 ## 2026-11-24
 
 - **模型清单同步**：新增 Google Gemini 4 系列（`gemini-4-argon`、`gemini-4-carbon`、`gemini-4-hydrogen`、`gemini-4-neon`、`gemini-3.8-flash`）、`claude-fable-5-2` 与生图模型 `seedream-5-5`。

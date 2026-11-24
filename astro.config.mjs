@@ -26,6 +26,7 @@ export default defineConfig({
             { slug: 'guides/streaming' },
             { slug: 'guides/vision' },
             { slug: 'guides/images' },
+            { slug: 'guides/videos' },
           ],
         },
         {
