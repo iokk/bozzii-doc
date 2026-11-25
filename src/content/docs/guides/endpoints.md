@@ -24,7 +24,7 @@ description: 铂子 API 支持的接口端点、协议格式与当前能力边�
 | `/v1/completions` | ❌ 404 | 请使用 `/v1/chat/completions` |
 | `/v1/embeddings` | ❌ 404 | 暂不提供向量嵌入服务 |
 | `/v1/audio/*` | ❌ 503 | 暂不提供语音转写与合成 |
-| `/v1/videos`、`/api/v3/contents/generations/tasks` | 🔒 按分组开放 | 异步视频生成（`sd-2.5`、`sd-2.5-flash` 等），详见[视频生成](/guides/videos/)，可用性以当前分组 `GET /v1/models` 为准 |
+| `/v1/videos`、`/api/v3/contents/generations/tasks` | 🔒 按分组开放 | 异步视频生成（官方原版映射 `seedance-2-5`、`seedance-2-5-flash` 等），详见[视频生成](/guides/videos/)，可用性以当前分组 `GET /v1/models` 为准 |
 | `/v1/moderations`、`/v1/rerank`、`/v1/batches` | ❌ 未启用 | 暂不提供 |
 
 ## 协议快速对比

@@ -47,7 +47,7 @@ GPT、Claude、Grok 及生图系列模型**仅面向经审核的企业客户开�
 | `gemini-3.8-flash` | Google | ✅ | ✅ | ✅ | 轻量高速版本 |
 | `grok-4.6` / `grok-4.7` | xAI | ✅ | ✅ | ✅ | 支持推理输出 |
 
-生图模型清单与调用方式请见 [图像生成](/guides/images/)；视频生成模型（`sd-2.5`、`sd-2.5-flash`）的规格与 `/v1/videos` 参数规范请见 [视频生成](/guides/videos/)。部分固定日期快照（如 `deepseek-v4.1-flash-1017`）及按分组开放的专用模型（如 `jev-latest`、异步视频模型 `MiniMax-H3`）以当前令牌调用 `GET /v1/models` 的实际返回为准。
+生图模型清单与调用方式请见 [图像生成](/guides/images/)；视频生成模型（官方原版火山方舟映射 `seedance-2-5`、`seedance-2-5-flash`）的规格与 `/v1/videos` 参数规范请见 [视频生成](/guides/videos/)。部分固定日期快照（如 `deepseek-v4.1-flash-1017`）及按分组开放的专用模型（如 `jev-latest`、异步视频模型 `MiniMax-H3`）以当前令牌调用 `GET /v1/models` 的实际返回为准。
 
 ---
 

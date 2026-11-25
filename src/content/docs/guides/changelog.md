@@ -5,7 +5,7 @@ description: 铂子 API 文档站点与接口能力更新记录。
 
 ## 2026-11-25
 
-- **新增视频生成文档**：上线 [视频生成](/guides/videos/) 接入指南，补充 `sd-2.5` / `sd-2.5-flash` 的 `/v1/videos` 异步调用流程、图生视频/首尾帧/多模态参考参数规范、公网 URL 约束及 `metadata.resolution` / `metadata.ratio` 推荐写法。
+- **升级视频生成至官方原版火山方舟通道**：[视频生成](/guides/videos/) 模型统一规范为 `seedance-2-5`（映射官方 `doubao-seedance-2-5-260628`）与 `seedance-2-5-flash`（映射官方 `doubao-seedance-2-5-flash-261115`），完整支持单图首帧、首尾帧、多模态参考及 Base64 小图（≥300px）。
 
 ## 2026-11-24
 
